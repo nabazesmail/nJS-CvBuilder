@@ -1,0 +1,21 @@
+# Node.js / Express
+node_modules/
+dist/
+.env
+
+# Logs
+logs/
+*.log
+
+# Dependencies
+package-lock.json
+
+# IDE-specific
+.vscode/
+.idea/
+
+# Mac-specific
+.DS_Store
+
+# Compiled binary addons (like native Node modules)
+build/
