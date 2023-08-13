@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const router = require('./src/router/router');
 const loggerMiddleware = require('./src/middleware/logger');
-const connectToDatabase = require('./src/config/db'); // Import the database connection function
+const {connectToDatabase} = require('./src/config/db'); // Import the database connection function
 require('dotenv').config(); // Load environment variables from .env
 
 app.use(express.json());

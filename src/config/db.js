@@ -2,6 +2,9 @@
 const mongoose = require('mongoose');
 require('dotenv').config(); // Load environment variables from .env
 
+const User = require('../models/user');
+const PersonalInfo = require('../models/personalInfo');
+
 const connectToDatabase = async () => {
   try {
     await mongoose.connect(process.env.DB_URI, {
@@ -14,4 +17,8 @@ const connectToDatabase = async () => {
   }
 };
 
-module.exports = connectToDatabase;
+module.exports = {
+  connectToDatabase,
+  User,
+  PersonalInfo,
+};

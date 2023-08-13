@@ -1,12 +1,12 @@
-// controller/itemController.js
+// controller/userController.js
 const express = require('express');
 const router = express.Router();
-const itemService = require('../services/itemServices');
+const userService = require('../services/userServices');
 
 router.post('/', async (req, res) => {
   try {
-    const newItem = await itemService.createItem(req.body);
-    res.json(newItem);
+    const newUser = await userService.createUser(req.body);
+    res.json(newUser);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -14,8 +14,8 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const items = await itemService.getItems();
-    res.json(items);
+    const users = await userService.getUsers();
+    res.json(users);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -23,11 +23,11 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const item = await itemService.getItemById(req.params.id);
-    if (!item) {
-      return res.status(404).json({ message: 'Item not found' });
+    const user = await userService.getUserById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
-    res.json(item);
+    res.json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -35,8 +35,8 @@ router.get('/:id', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   try {
-    const updatedItem = await itemService.updateItem(req.params.id, req.body);
-    res.json(updatedItem);
+    const updatedUser = await userService.updateUser(req.params.id, req.body);
+    res.json(updatedUser);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -44,8 +44,8 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try {
-    const deletedItem = await itemService.deleteItem(req.params.id);
-    res.json(deletedItem);
+    const deletedUser = await userService.deleteUser(req.params.id);
+    res.json(deletedUser);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

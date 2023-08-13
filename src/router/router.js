@@ -1,8 +1,10 @@
 // router/index.js
 const express = require('express');
 const router = express.Router();
-const itemController = require('../controller/itemController');
+const userController = require('../controller/userController');
+const personalInfoController = require('../controller/personalInfoController'); // Import the new controller
 
-router.use('/items', itemController);
+router.use('/users', userController);
+router.use('/personal-info', personalInfoController); // Use the new controller for personal info
 
 module.exports = router;
