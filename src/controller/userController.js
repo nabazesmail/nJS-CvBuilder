@@ -2,7 +2,9 @@
 const express = require('express');
 const router = express.Router();
 const userService = require('../services/userServices');
+const authenticate=require('../middleware/authenticate').authenticate;
 
+//register user
 router.post('/', async (req, res) => {
   try {
     const newUser = await userService.createUser(req.body);
@@ -12,6 +14,27 @@ router.post('/', async (req, res) => {
   }
 });
 
+//user login
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    console.log(req.body);
+    const token = await userService.login(email, password);
+    if (!token) {
+      return res.sendStatus(401);
+    }
+    res.json({ token });
+  } catch (error) {
+    console.error('Error during login:', error);
+    res.sendStatus(500);
+  }
+});
+
+//below this Route all routes are authenticated
+router.use(authenticate);
+
+
+//get all users
 router.get('/', async (req, res) => {
   try {
     const users = await userService.getUsers();
@@ -21,6 +44,7 @@ router.get('/', async (req, res) => {
   }
 });
 
+//get user by id
 router.get('/:id', async (req, res) => {
   try {
     const user = await userService.getUserById(req.params.id);
@@ -33,6 +57,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+//update user
 router.put('/:id', async (req, res) => {
   try {
     const updatedUser = await userService.updateUser(req.params.id, req.body);
@@ -42,6 +67,8 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+
+//delete user
 router.delete('/:id', async (req, res) => {
   try {
     const deletedUser = await userService.deleteUser(req.params.id);

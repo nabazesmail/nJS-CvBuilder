@@ -3,7 +3,10 @@ const express = require('express');
 const router = express.Router();
 const personalInfoService = require('../services/personalInfoServices');
 const userService=require('../services/userServices')
+const authenticate=require('../middleware/authenticate').authenticate;
 
+//below this Route all routes are authenticated
+router.use(authenticate);
 
 router.post('/:userId', async (req, res) => {
   try {
@@ -24,6 +27,7 @@ router.post('/:userId', async (req, res) => {
 
     res.json(newPersonalInfo);
   } catch (error) {
+    console.log('naxer');
     res.status(500).json({ error: error.message });
   }
 });

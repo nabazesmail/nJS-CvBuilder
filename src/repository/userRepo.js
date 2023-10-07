@@ -5,6 +5,10 @@ async function createUser(data) {
   return User.create(data);
 }
 
+async function getUserByEmail(email) {
+  return User.findOne({ email: email });
+}
+
 async function getUsers() {
   return User.find();
 }
@@ -23,6 +27,7 @@ async function deleteUser(id) {
 
 module.exports = {
   createUser,
+  getUserByEmail,
   getUsers,
   getUserById,
   updateUser,

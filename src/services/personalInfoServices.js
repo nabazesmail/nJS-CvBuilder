@@ -7,16 +7,18 @@ async function createPersonalInfo(data) {
   // Check if the user exists
   const userExists = await userService.getUserById(data.userId);
   if (!userExists) {
+    console.log('User does not exist');
     throw new Error('User does not exist');
   }
 
   // Check if a personal info record already exists for the user
   const existingPersonalInfo = await personalInfoRepo.getPersonalInfoByUserId(data.userId);
   if (existingPersonalInfo) {
+    console.log('Personal info already exists for this user');
     throw new Error('Personal info already exists for this user');
   }
 
-  return repository.createPersonalInfo(data);
+  return personalInfoRepo.createPersonalInfo(data);
 }
 
 async function getPersonalInfos() {
