@@ -1,8 +1,22 @@
 // services/userServices.js
-const repository = require('../repository/userRepo');
-const { generateToken }=require('../utils/tokenUtils')
-const bcrypt = require('bcrypt');
 
+const repository = require('../repository/userRepo');
+const { generateToken } = require('../utils/tokenUtils');
+const bcrypt = require('bcrypt');
+const passport = require('passport'); // Make sure to import the passport package correctly
+
+
+function authenticateGoogle() {
+  return passport.authenticate('google', { scope: ['profile', 'email'] });
+}
+
+function handleGoogleCallback() {
+  return passport.authenticate('google', { failureRedirect: '/' });
+}
+
+function handleGoogleCallbackSuccess(req, res) {
+  res.redirect('/dashboard'); // Redirect after successful authentication
+}
 
 async function createUser(data) {
   return repository.createUser(data);
@@ -46,6 +60,10 @@ async function updateUser(id, data) {
   return repository.updateUser(id, data);
 }
 
+async function getUserByEmail(email) {
+  return repository.getUserByEmail(email);
+}
+
 async function deleteUser(id) {
   return repository.deleteUser(id);
 }
@@ -55,6 +73,11 @@ module.exports = {
   login,
   getUsers,
   getUserById,
+  getUserByEmail,
   updateUser,
   deleteUser,
+
+  authenticateGoogle,
+  handleGoogleCallback,
+  handleGoogleCallbackSuccess
 };

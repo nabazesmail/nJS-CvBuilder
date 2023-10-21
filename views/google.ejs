@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sign-In Example</title>
+</head>
+
+<body>
+    <h1>Welcome to CV Builder</h1>
+
+    <button id="google-signin-button">sign in</button>
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <script>
+        // This function is called when Google API is loaded
+        function onGoogleLoad() {
+            gapi.load('auth2', function () {
+                gapi.auth2.init({
+                    client_id: '231486974577-ucpnsq8jr8o1i6b4ssdcvk1ihejhj4qj.apps.googleusercontent.com', // Replace with your actual client ID
+                });
+
+                // Render the Google Sign-In button
+                gapi.signin2.render('google-signin-button', {
+                    scope: 'profile email',
+                    width: 200,
+                    height: 50,
+                    longtitle: true,
+                    theme: 'dark',
+                    onsuccess: onGoogleSignIn,
+                    onfailure: onGoogleSignInFailure
+                });
+            });
+        }
+
+        // This function is called when the user successfully signs in
+        function onGoogleSignIn(googleUser) {
+            // Access user information using googleUser.getBasicProfile()
+
+            // Send the user's ID token to your backend for further authentication
+
+            // Example:
+            // var id_token = googleUser.getAuthResponse().id_token;
+            // sendToServer(id_token);
+        }
+
+        // This function is called if there is an error during sign in
+        function onGoogleSignInFailure(error) {
+            console.error('Google Sign-In failed:', error);
+        }
+    </script>
+</body>
+
+</html>

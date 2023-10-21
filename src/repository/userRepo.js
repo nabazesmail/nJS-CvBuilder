@@ -9,6 +9,7 @@ async function getUserByEmail(email) {
   return User.findOne({ email: email });
 }
 
+
 async function getUsers() {
   return User.find();
 }

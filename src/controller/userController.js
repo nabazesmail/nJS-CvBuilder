@@ -1,10 +1,9 @@
-// controller/userController.js
 const express = require('express');
 const router = express.Router();
 const userService = require('../services/userServices');
-const authenticate=require('../middleware/authenticate').authenticate;
+const { authenticate } = require('../middleware/authenticate');
 
-//register user
+// Register user
 router.post('/', async (req, res) => {
   try {
     const newUser = await userService.createUser(req.body);
@@ -14,27 +13,25 @@ router.post('/', async (req, res) => {
   }
 });
 
-//user login
+// User login
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(req.body);
     const token = await userService.login(email, password);
     if (!token) {
-      return res.sendStatus(401);
+      return res.status(401).json({ message: 'Invalid email or password' });
     }
     res.json({ token });
   } catch (error) {
     console.error('Error during login:', error);
-    res.sendStatus(500);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-//below this Route all routes are authenticated
+// Authentication middleware
 router.use(authenticate);
 
-
-//get all users
+// Get all users
 router.get('/', async (req, res) => {
   try {
     const users = await userService.getUsers();
@@ -44,20 +41,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-//get user by id
-router.get('/:id', async (req, res) => {
-  try {
-    const user = await userService.getUserById(req.params.id);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    res.json(user);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-//update user
+// Update user
 router.put('/:id', async (req, res) => {
   try {
     const updatedUser = await userService.updateUser(req.params.id, req.body);
@@ -67,8 +51,18 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+// Get user by email
+router.get('/email/:email', async (req, res) => {
+  try {
+    const user = await userService.getUserByEmail(req.params.email);
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
-//delete user
+
+// Delete user
 router.delete('/:id', async (req, res) => {
   try {
     const deletedUser = await userService.deleteUser(req.params.id);
