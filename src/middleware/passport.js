@@ -6,6 +6,8 @@ const {
   getUserById,
   createUser,
 } = require("../services/userServices");
+const { generateToken } = require("../utils/tokenUtils");
+const { token } = require("morgan");
 
 passport.use(
   new GoogleStrategy(
@@ -27,6 +29,13 @@ passport.use(
             password: password,
           });
         }
+
+        // Generate a token for the user
+        const token = generateToken({
+          id: user.id,
+          email: user.email,
+        });
+        console.log("This is the token =" + " " + token);
 
         done(null, user);
       } catch (error) {

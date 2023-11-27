@@ -1,6 +1,6 @@
 // src/models/user.js
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema({
   username: String,
@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
       validator: function (value) {
         return /\S+@\S+\.\S+/.test(value);
       },
-      message: 'Email address must be valid',
+      message: "Email address must be valid",
     },
   },
   password: {
@@ -21,10 +21,36 @@ const userSchema = new mongoose.Schema({
     minlength: 8,
     maxlength: 15,
   },
+  passwordConfirmation: {
+    type: String,
+    required: true,
+    validate: {
+      validator: function (value) {
+        return this.password === value;
+      },
+      message: "Passwords do not match",
+    },
+  },
 });
 
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    return next();
+  }
+
+  try {
+    const hashedPassword = await bcrypt.hash(this.password, 10);
+    this.password = hashedPassword;
+    // Remove the password confirmation before saving
+    this.passwordConfirmation = undefined;
+    next();
+  } catch (error) {
+    return next(error);
+  }
+});
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
     return next();
   }
 
@@ -37,7 +63,7 @@ userSchema.pre('save', async function (next) {
   }
 });
 
-userSchema.pre('findOneAndUpdate', async function (next) {
+userSchema.pre("findOneAndUpdate", async function (next) {
   if (!this._update.password) {
     return next();
   }
@@ -51,4 +77,4 @@ userSchema.pre('findOneAndUpdate', async function (next) {
   }
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);
