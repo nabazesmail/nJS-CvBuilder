@@ -2,6 +2,8 @@
 
 const repository = require("../repository/userRepo");
 const { generateToken } = require("../utils/tokenUtils");
+
+
 const bcrypt = require("bcrypt");
 const passport = require("passport"); // Make sure to import the passport package correctly
 
@@ -17,10 +19,11 @@ function handleGoogleCallbackSuccess(req, res) {
   res.redirect("/dashboard"); // Redirect after successful authentication
 }
 
+
+
 async function createUser(data) {
   return repository.createUser(data);
 }
-
 
 async function login(credentials) {
   const { email, password } = credentials;
@@ -41,8 +44,6 @@ async function login(credentials) {
   const token = generateToken(user); // Generate token for the user
   return { user, token };
 }
-
-
 
 
 async function getUsers() {

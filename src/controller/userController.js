@@ -3,6 +3,8 @@ const router = express.Router();
 const userService = require("../services/userServices");
 const { authenticate } = require("../middleware/authenticate");
 
+const nodemailer = require('nodemailer');
+
 // Register user
 router.post("/", async (req, res) => {
   try {
@@ -23,6 +25,23 @@ router.post("/login", async (req, res) => {
   }
 });
 
+
+router.post('/forgetpassword', async (req, res) => {
+  try {
+    const { email } = req.body;
+    // Check if the email exists in the database
+    const user = await userService.getUserByEmail(email);
+
+    if (!user) {
+      return res.status(404).json({ error: 'Email not found' });
+    }
+
+    return res.status(200).json('Check your email to reset your password!');
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Authentication middleware
 router.use(authenticate);
 
@@ -35,7 +54,6 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
 
 // Update user
 router.put("/:id", async (req, res) => {

@@ -30,7 +30,15 @@ const userSchema = new mongoose.Schema({
       message: "Passwords do not match",
     },
   },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
+  verificationCode: {
+    type: String,
+  },
 });
+
 
 // Hash the password and passwordConfirmation before saving to the database
 userSchema.pre("save", async function (next) {
