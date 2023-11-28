@@ -1,52 +1,49 @@
 // services/userServices.js
 
-const repository = require('../repository/userRepo');
-const { generateToken } = require('../utils/tokenUtils');
-const bcrypt = require('bcrypt');
-const passport = require('passport'); // Make sure to import the passport package correctly
-
+const repository = require("../repository/userRepo");
+const { generateToken } = require("../utils/tokenUtils");
+const bcrypt = require("bcrypt");
+const passport = require("passport"); // Make sure to import the passport package correctly
 
 function authenticateGoogle() {
-  return passport.authenticate('google', { scope: ['profile', 'email'] });
+  return passport.authenticate("google", { scope: ["profile", "email"] });
 }
 
 function handleGoogleCallback() {
-  return passport.authenticate('google', { failureRedirect: '/' });
+  return passport.authenticate("google", { failureRedirect: "/" });
 }
 
 function handleGoogleCallbackSuccess(req, res) {
-  res.redirect('/dashboard'); // Redirect after successful authentication
+  res.redirect("/dashboard"); // Redirect after successful authentication
 }
 
 async function createUser(data) {
   return repository.createUser(data);
 }
 
-async function login(email, password) {
-  try {
-    const user = await repository.getUserByEmail(email);
 
-    if (!user) {
-      return null;
-    }
+async function login(credentials) {
+  const { email, password } = credentials;
+  const user = await repository.getUserByEmail(email);
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordValid) {
-      return null;
-    }
-
-    const token = generateToken({
-      id: user.id,
-      email: user.email,
-    });
-
-    return token;
-  } catch (error) {
-    console.error('Failed to login:', error);
-    throw new Error('Failed to login');
+  if (!user) {
+    throw new Error('User not found');
   }
+
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+
+  console.log('Is Password Valid:', isPasswordValid); // Add this line for debugging
+
+  if (!isPasswordValid) {
+    throw new Error('Invalid email or password');
+  }
+
+  const token = generateToken(user); // Generate token for the user
+  return { user, token };
 }
+
+
+
 
 async function getUsers() {
   return repository.getUsers();
@@ -79,5 +76,5 @@ module.exports = {
 
   authenticateGoogle,
   handleGoogleCallback,
-  handleGoogleCallbackSuccess
+  handleGoogleCallbackSuccess,
 };

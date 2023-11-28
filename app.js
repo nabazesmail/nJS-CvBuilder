@@ -18,8 +18,6 @@ app.use(session({
   saveUninitialized: true,
 }));
 
-
-
 app.use('/api', router);
 
 app.get('/auth/google',
@@ -34,8 +32,10 @@ app.get('/auth/google/callback',
 );
 
 app.get('/dashboard', (req, res) => {
-  res.send("<h1>you successfully signed in with your google account !!<h1>");
-});
+    res.send(`<h1>You successfully signed in with your Google account!</h1>`);
+  }
+);
+
 
 connectToDatabase().then(() => {
   const PORT = process.env.PORT || 3000;

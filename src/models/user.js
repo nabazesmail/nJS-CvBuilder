@@ -1,4 +1,3 @@
-// src/models/user.js
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
@@ -33,44 +32,37 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+// Hash the password and passwordConfirmation before saving to the database
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    return next();
-  }
-
   try {
-    const hashedPassword = await bcrypt.hash(this.password, 10);
-    this.password = hashedPassword;
-    // Remove the password confirmation before saving
-    this.passwordConfirmation = undefined;
+    // Check if the password field is modified or new
+    if (this.isModified("password") || this.isNew) {
+      const hashedPassword = await bcrypt.hash(this.password, 10);
+      this.password = hashedPassword;
+    }
+
+    // Hash passwordConfirmation if it's present and modified
+    if (this.isModified("passwordConfirmation")) {
+      const hashedConfirmation = await bcrypt.hash(
+        this.passwordConfirmation,
+        10
+      );
+      this.passwordConfirmation = hashedConfirmation;
+    }
+
     next();
   } catch (error) {
     return next(error);
   }
 });
 
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    return next();
-  }
-
-  try {
-    const hashedPassword = await bcrypt.hash(this.password, 10);
-    this.password = hashedPassword;
-    next();
-  } catch (error) {
-    return next(error);
-  }
-});
-
+// Hash the password before findOneAndUpdate
 userSchema.pre("findOneAndUpdate", async function (next) {
-  if (!this._update.password) {
-    return next();
-  }
-
   try {
-    const hashedPassword = await bcrypt.hash(this._update.password, 10);
-    this._update.password = hashedPassword;
+    if (this._update.password) {
+      const hashedPassword = await bcrypt.hash(this._update.password, 10);
+      this._update.password = hashedPassword;
+    }
     next();
   } catch (error) {
     return next(error);

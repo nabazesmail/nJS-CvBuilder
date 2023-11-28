@@ -7,7 +7,6 @@ const {
   createUser,
 } = require("../services/userServices");
 const { generateToken } = require("../utils/tokenUtils");
-const { token } = require("morgan");
 
 passport.use(
   new GoogleStrategy(
@@ -27,6 +26,7 @@ passport.use(
           user = await createUser({
             email: email,
             password: password,
+            passwordConfirmation:password,
           });
         }
 

@@ -1,10 +1,10 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const userService = require('../services/userServices');
-const { authenticate } = require('../middleware/authenticate');
+const userService = require("../services/userServices");
+const { authenticate } = require("../middleware/authenticate");
 
 // Register user
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const newUser = await userService.createUser(req.body);
     res.json(newUser);
@@ -13,18 +13,13 @@ router.post('/', async (req, res) => {
   }
 });
 
-// User login
-router.post('/login', async (req, res) => {
+// Login user and generate token
+router.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const token = await userService.login(email, password);
-    if (!token) {
-      return res.status(401).json({ message: 'Invalid email or password' });
-    }
-    res.json({ token });
+    const { user, token } = await userService.login(req.body);
+    res.json({ user, token });
   } catch (error) {
-    console.error('Error during login:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(401).json({ error: error.message });
   }
 });
 
@@ -32,7 +27,7 @@ router.post('/login', async (req, res) => {
 router.use(authenticate);
 
 // Get all users
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const users = await userService.getUsers();
     res.json(users);
@@ -41,8 +36,9 @@ router.get('/', async (req, res) => {
   }
 });
 
+
 // Update user
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const updatedUser = await userService.updateUser(req.params.id, req.body);
     res.json(updatedUser);
@@ -52,7 +48,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Get user by email
-router.get('/email/:email', async (req, res) => {
+router.get("/email/:email", async (req, res) => {
   try {
     const user = await userService.getUserByEmail(req.params.email);
     res.json(user);
@@ -61,9 +57,8 @@ router.get('/email/:email', async (req, res) => {
   }
 });
 
-
 // Delete user
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const deletedUser = await userService.deleteUser(req.params.id);
     res.json(deletedUser);
