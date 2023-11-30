@@ -4,6 +4,7 @@ require('dotenv').config(); // Load environment variables from .env
 
 const User = require('../models/user');
 const PersonalInfo = require('../models/personalInfo');
+const Goals = require('../models/golas');
 
 const connectToDatabase = async () => {
   try {
@@ -21,4 +22,5 @@ module.exports = {
   connectToDatabase,
   User,
   PersonalInfo,
+  Goals,
 };

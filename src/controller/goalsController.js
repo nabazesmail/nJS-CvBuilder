@@ -1,7 +1,7 @@
 // controller/personalInfoController.js
 const express = require('express');
 const router = express.Router();
-const personalInfoService = require('../services/personalInfoServices');
+const goalsService = require('../services/goalsServices');
 const userService=require('../services/userServices')
 const authenticate=require('../middleware/authenticate').authenticate;
 
@@ -18,18 +18,14 @@ router.post('/:userId', async (req, res) => {
       return res.status(400).json({ error: 'User does not exist' });
     }
 
-    const newPersonalInfo = await personalInfoService.createPersonalInfo({
+    const newGoals = await goalsService.createGoals({
       userId: userId,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      email:req.body.email,
-      phoneNumber: req.body.phoneNumber,
-      address: req.body.address,
+      occupation: req.body.occupation,
+      yourOccupationGoal: req.body.yourOccupationGoal,
     });
 
-    res.json(newPersonalInfo);
+    res.json(newGoals);
   } catch (error) {
-    console.log('naxer');
     res.status(500).json({ error: error.message });
   }
 });
@@ -37,8 +33,8 @@ router.post('/:userId', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const personalInfos = await personalInfoService.getPersonalInfos();
-    res.json(personalInfos);
+    const goals = await goalsService.getGoals();
+    res.json(goals);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -46,11 +42,11 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const personalInfo = await personalInfoService.getPersonalInfoById(req.params.id);
-    if (!personalInfo) {
-      return res.status(404).json({ message: 'Personal info not found' });
+    const goals = await goalsService.getGoalsById(req.params.id);
+    if (!goals) {
+      return res.status(404).json({ message: 'goals not found' });
     }
-    res.json(personalInfo);
+    res.json(goals);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -58,8 +54,8 @@ router.get('/:id', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   try {
-    const updatedPersonalInfo = await personalInfoService.updatePersonalInfo(req.params.id, req.body);
-    res.json(updatedPersonalInfo);
+    const updatedGoal = await goalsService.updateGoals(req.params.id, req.body);
+    res.json(updatedGoal);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -67,8 +63,8 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try {
-    const deletedPersonalInfo = await personalInfoService.deletePersonalInfo(req.params.id);
-    res.json(deletedPersonalInfo);
+    const deletedGoal = await goalsService.deleteGoals(req.params.id);
+    res.json(deletedGoal);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
