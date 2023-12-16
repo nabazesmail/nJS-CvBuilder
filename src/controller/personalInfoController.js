@@ -29,7 +29,6 @@ router.post('/:userId', async (req, res) => {
 
     res.json(newPersonalInfo);
   } catch (error) {
-    console.log('naxer');
     res.status(500).json({ error: error.message });
   }
 });
