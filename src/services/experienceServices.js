@@ -1,13 +1,9 @@
 const experienceRepo = require("../repository/experienceRepo");
 const userService= require("../services/userServices");
+const Experience= require("../models/experience");
+
 
 async function createExperience(data) {
-  // Check if the user exists
-  const userExists = await userService.getUserById(data.userId);
-  if (!userExists) {
-    throw new Error('User does not exist');
-  }
-
   // Proceed to create experience
   return Experience.create(data);
 }

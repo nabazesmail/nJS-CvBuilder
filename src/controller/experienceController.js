@@ -29,7 +29,7 @@ router.post("/:userId", async (req, res) => {
     });
     res.json(newExperience);
   } catch (error) {
-    if (error.message === 'User does not exist') {
+    if (error) {
       return res.status(400).json({ error: 'User does not exist' });
     }
     res.status(500).json({ error: error.message });
