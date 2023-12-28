@@ -1,10 +1,11 @@
-// src/config/db.js
 const mongoose = require('mongoose');
 require('dotenv').config(); // Load environment variables from .env
 
 const User = require('../models/user');
 const PersonalInfo = require('../models/personalInfo');
-const Goals = require('../models/golas');
+const Goals = require('../models/golas'); // Assuming the model for goals is named 'goals'
+const Education = require('../models/education'); // Import the Education model
+const Experience = require('../models/experience'); // Import the Experience model
 
 const connectToDatabase = async () => {
   try {
@@ -23,4 +24,6 @@ module.exports = {
   User,
   PersonalInfo,
   Goals,
+  Education,
+  Experience,
 };
