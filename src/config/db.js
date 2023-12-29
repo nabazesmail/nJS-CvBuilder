@@ -6,6 +6,7 @@ const PersonalInfo = require('../models/personalInfo');
 const Goals = require('../models/golas'); // Assuming the model for goals is named 'goals'
 const Education = require('../models/education'); // Import the Education model
 const Experience = require('../models/experience'); // Import the Experience model
+const Problems = require('../models/problems');
 
 const connectToDatabase = async () => {
   try {
@@ -26,4 +27,5 @@ module.exports = {
   Goals,
   Education,
   Experience,
+  Problems,
 };

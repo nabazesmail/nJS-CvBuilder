@@ -6,6 +6,7 @@ const goalsController = require('../controller/goalsController');
 const experienceController = require('../controller/experienceController');
 const personalInfoController = require('../controller/personalInfoController'); // Import the new controller
 const educationController = require('../controller/educationController');
+const problemController= require('../controller/problemController');
 const userServices=require('../services/userServices');
 
 router.use('/users', userController);
@@ -17,9 +18,11 @@ router.get('/auth/google/callback', userServices.handleGoogleCallbackSuccess);
 // Add the route for getting user by email
 router.get('/users/email/:email', userController);
 
-router.use('/personal-info', personalInfoController); // Use the new controller for personal info
-router.use('/goals', goalsController); // Use the new controller for personal info
+router.use('/personal-info', personalInfoController);
+router.use('/goals', goalsController);
 router.use('/experiences', experienceController);
-router.use('/education',educationController); // Use the new controller for
+router.use('/education',educationController);
+router.use('/problem', problemController);
+
 
 module.exports = router;
