@@ -55,6 +55,16 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Get all users
+router.get("/:id", async (req, res) => {
+  try {
+    const user = await userService.getUserById(req.params.id);
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Update user
 router.put("/:id", async (req, res) => {
   try {

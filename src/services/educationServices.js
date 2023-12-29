@@ -9,13 +9,6 @@ async function createEducation(data) {
     throw new Error('User does not exist');
   }
 
-  // Check if an education record already exists for the user
-  const existingEducation = await educationRepo.getEducationByUserId(data.userId);
-  if (existingEducation) {
-    console.log('Education record already exists for this user');
-    throw new Error('Education record already exists for this user');
-  }
-
   return educationRepo.createEducation(data);
 }
 
