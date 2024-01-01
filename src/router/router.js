@@ -7,6 +7,8 @@ const experienceController = require('../controller/experienceController');
 const personalInfoController = require('../controller/personalInfoController'); // Import the new controller
 const educationController = require('../controller/educationController');
 const problemController= require('../controller/problemController');
+const skillController=require('../controller/skillController');
+
 const userServices=require('../services/userServices');
 
 router.use('/users', userController);
@@ -23,6 +25,7 @@ router.use('/goals', goalsController);
 router.use('/experiences', experienceController);
 router.use('/education',educationController);
 router.use('/problem', problemController);
+router.use('/skill', skillController);
 
 
 module.exports = router;
