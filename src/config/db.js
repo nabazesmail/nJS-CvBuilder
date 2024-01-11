@@ -9,6 +9,7 @@ const Experience = require('../models/experience'); // Import the Experience mod
 const Problems = require('../models/problems');
 const Skills=require('../models/skills'); // Import the Skills model
 const Languages=require('../models/languages'); // Import the languages model
+const Summary=require('../models/summary');
 
 const connectToDatabase = async () => {
   try {
@@ -31,5 +32,6 @@ module.exports = {
   Experience,
   Problems,
   Skills,
-  Languages
+  Languages,
+  Summary,
 };

@@ -9,6 +9,7 @@ const educationController = require('../controller/educationController');
 const problemController= require('../controller/problemController');
 const skillController=require('../controller/skillController');
 const languageController = require('../controller/languageController');
+const summaryController=require('../controller/summaryController');
 
 const userServices=require('../services/userServices');
 
@@ -28,6 +29,7 @@ router.use('/education',educationController);
 router.use('/problem', problemController);
 router.use('/skill', skillController);
 router.use('/language', languageController);
+router.use('/summary', summaryController);
 
 
 module.exports = router;

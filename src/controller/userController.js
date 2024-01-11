@@ -3,7 +3,11 @@ const router = express.Router();
 const userService = require("../services/userServices");
 const { authenticate } = require("../middleware/authenticate");
 
-const nodemailer = require('nodemailer');
+const sendEmail = require("../middleware/nodeMailer");
+
+const { sendResetPasswordEmail } = require("../middleware/nodeMailer");
+const { generateResetToken } = require("../utils/tokenServices");
+const { User } = require("../config/db");
 
 // Register user
 router.post("/", async (req, res) => {
@@ -25,18 +29,31 @@ router.post("/login", async (req, res) => {
   }
 });
 
-
-router.post('/forgetpassword', async (req, res) => {
+router.post("/forgetpassword", async (req, res) => {
   try {
-    const { email } = req.body;
-    // Check if the email exists in the database
-    const user = await userService.getUserByEmail(email);
+    const { email } = req.body; // Extract 'email' from request body
+
+    const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(404).json({ error: 'Email not found' });
+      return res.status(404).json({ error: "Email not found" });
     }
 
-    return res.status(200).json('Check your email to reset your password!');
+    // Generate a random password reset token (You should use a secure method for this)
+    const resetToken = generateResetToken(); // Implement a function to generate a token
+
+    // Compose email data
+    const emailOptions = {
+      email: user.email, // Assuming 'user' has an 'email' field
+      subject: "Password Reset",
+      message: `Your password reset token is: ${resetToken}
+      open this link to change your password http://localhost:3000/resetpassword then verify your email by adding the reset token`,
+    };
+
+    // Send email with password reset token
+    await sendEmail(emailOptions);
+
+    res.status(200).json("Check your email to reset your password!");
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
