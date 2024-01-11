@@ -37,4 +37,5 @@ module.exports = {
   getSummariesByUserId,
   updateSummary,
   deleteSummary,
+
 };

@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const summaryService = require("../services/summaryServices");
+
 const authenticate = require('../middleware/authenticate').authenticate;
 
 // Below this Route all routes are authenticated
 router.use(authenticate);
+
 
 router.post("/:userId", async (req, res) => {
   try {
@@ -72,5 +74,6 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
 
 module.exports = router;
