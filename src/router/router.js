@@ -10,8 +10,10 @@ const problemController= require('../controller/problemController');
 const skillController=require('../controller/skillController');
 const languageController = require('../controller/languageController');
 const summaryController=require('../controller/summaryController');
+const uploadController=require('../controller/uploadController');
 
 const userServices=require('../services/userServices');
+const upload=require('../config/multer');
 
 router.use('/users', userController);
 
@@ -31,5 +33,6 @@ router.use('/skill', skillController);
 router.use('/language', languageController);
 router.use('/summary', summaryController);
 
+router.use('/upload', upload.single('file'), uploadController);
 
 module.exports = router;
