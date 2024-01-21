@@ -29,8 +29,13 @@ async function getPersonalInfoById(id) {
   return personalInfoRepo.getPersonalInfoById(id);
 }
 
-async function updatePersonalInfo(id, data) {
-  return personalInfoRepo.updatePersonalInfo(id, data);
+async function getPersonalInfoByUserId(userId) {
+  return personalInfoRepo.getPersonalInfoByUserId(userId);
+}
+
+async function updatePersonalInfo(userId, data) {
+  // Make sure this correctly identifies and updates the document
+  return personalInfoRepo.updatePersonalInfo(userId, data);
 }
 
 async function deletePersonalInfo(id) {
@@ -41,6 +46,7 @@ module.exports = {
   createPersonalInfo,
   getPersonalInfos,
   getPersonalInfoById,
+  getPersonalInfoByUserId,
   updatePersonalInfo,
   deletePersonalInfo,
 };

@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 
 const personalInfoSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  profilePicture: String, // File ID from Appwrite
+  profilePictureName: String,
   firstName: String,
   lastName: String,
   email: {

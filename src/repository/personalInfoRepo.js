@@ -17,8 +17,8 @@ async function getPersonalInfoById(id) {
   return PersonalInfo.findById(id);
 }
 
-async function updatePersonalInfo(id, data) {
-  return PersonalInfo.findByIdAndUpdate(id, data, { new: true });
+async function updatePersonalInfo(userId, data) {
+  return PersonalInfo.findOneAndUpdate({ userId: userId }, data, { new: true });
 }
 
 async function deletePersonalInfo(id) {
