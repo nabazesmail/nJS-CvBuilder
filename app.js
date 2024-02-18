@@ -7,6 +7,7 @@ const {connectToDatabase} = require('./src/config/db');
 require('dotenv').config();
 const passport = require('./src/middleware/passport');
 const session = require('express-session');
+const cors = require('cors');
 
 app.use(express.json());
 
@@ -17,6 +18,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
 }));
+app.use(cors());
 
 app.use('/api', router);
 
