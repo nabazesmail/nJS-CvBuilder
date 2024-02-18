@@ -7,10 +7,6 @@ dist/
 logs/
 *.log
 
-# Dependencies
-package-lock.json
-package.json
-
 # IDE-specific
 .vscode/
 .idea/
